@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Registro Cita Previa</title>
+<title>Cita Previa — SIGE GVA</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -40,7 +40,6 @@
     padding: 20px 16px 60px;
   }
 
-  /* ── Fondo decorativo ── */
   body::before {
     content: '';
     position: fixed;
@@ -52,698 +51,662 @@
     z-index: 0;
   }
 
-  .wrap {
-    position: relative;
-    z-index: 1;
-    width: 100%;
-    max-width: 520px;
-  }
+  .wrap { position: relative; z-index: 1; width: 100%; max-width: 540px; }
 
-  /* ── Header ── */
-  .header {
-    text-align: center;
-    padding: 48px 0 36px;
-  }
+  /* Header */
+  .header { text-align: center; padding: 40px 0 28px; }
 
   .header-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: rgba(91,127,255,0.12);
-    border: 1px solid rgba(91,127,255,0.25);
-    border-radius: 50px;
-    padding: 6px 16px;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 20px;
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(91,127,255,0.12); border: 1px solid rgba(91,127,255,0.25);
+    border-radius: 50px; padding: 6px 16px;
+    font-size: 11px; font-weight: 600; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--accent); margin-bottom: 16px;
   }
-
   .header-badge::before {
-    content: '';
-    width: 6px; height: 6px;
-    background: var(--accent);
-    border-radius: 50%;
-    box-shadow: 0 0 8px var(--accent);
-    animation: pulse 2s infinite;
+    content: ''; width: 6px; height: 6px;
+    background: var(--accent); border-radius: 50%;
+    box-shadow: 0 0 8px var(--accent); animation: pulse 2s infinite;
   }
-
-  @keyframes pulse {
-    0%,100% { opacity: 1; transform: scale(1); }
-    50%      { opacity: 0.5; transform: scale(0.8); }
-  }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(.8)} }
 
   .header h1 {
-    font-family: var(--font-head);
-    font-size: clamp(26px, 6vw, 36px);
-    font-weight: 800;
-    letter-spacing: -0.03em;
-    line-height: 1.15;
-    margin-bottom: 10px;
+    font-family: var(--font-head); font-size: clamp(24px,6vw,34px);
+    font-weight: 800; letter-spacing: -0.03em; line-height: 1.15; margin-bottom: 8px;
     background: linear-gradient(135deg, #fff 30%, var(--accent2));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
   }
+  .header p { color: var(--muted); font-size: 14px; font-weight: 300; max-width: 360px; margin: 0 auto; }
 
-  .header p {
-    color: var(--muted);
-    font-size: 14px;
-    font-weight: 300;
-    max-width: 360px;
-    margin: 0 auto;
+  /* Steps indicator */
+  .steps {
+    display: flex; align-items: center; justify-content: center;
+    gap: 0; margin-bottom: 28px;
   }
-
-  /* ── Info banner ── */
-  .info-banner {
-    background: linear-gradient(135deg, rgba(91,127,255,0.1), rgba(167,139,250,0.07));
-    border: 1px solid rgba(91,127,255,0.2);
-    border-radius: var(--radius);
-    padding: 14px 18px;
-    margin-bottom: 24px;
-    display: flex;
-    gap: 12px;
-    align-items: flex-start;
+  .step {
+    display: flex; flex-direction: column; align-items: center; gap: 4px;
+    flex: 1; max-width: 90px;
   }
+  .step-circle {
+    width: 32px; height: 32px; border-radius: 50%;
+    border: 2px solid var(--border); background: var(--surface);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700; color: var(--muted);
+    transition: all 0.3s;
+  }
+  .step.active .step-circle { border-color: var(--accent); background: rgba(91,127,255,0.15); color: var(--accent); }
+  .step.done .step-circle { border-color: var(--success); background: rgba(52,211,153,0.15); color: var(--success); }
+  .step-label { font-size: 10px; color: var(--muted); text-align: center; letter-spacing: 0.03em; }
+  .step.active .step-label { color: var(--accent); }
+  .step.done .step-label { color: var(--success); }
+  .step-line { flex: 1; height: 1px; background: var(--border); max-width: 40px; }
+  .step-line.done { background: var(--success); }
 
-  .info-banner .icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
-
-  .info-banner-text { font-size: 13px; color: var(--label); line-height: 1.5; }
-  .info-banner-text strong { color: var(--text); font-weight: 500; }
-
-  /* ── Card ── */
+  /* Card */
   .card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 32px 28px;
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 20px; padding: 28px 24px;
     backdrop-filter: blur(12px);
     box-shadow: 0 24px 60px rgba(0,0,0,0.4), 0 1px 0 rgba(255,255,255,0.04) inset;
+    animation: reveal 0.5s cubic-bezier(0.22,1,0.36,1);
   }
+  @keyframes reveal { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
 
-  /* ── Sección ── */
   .section-title {
-    font-family: var(--font-head);
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin: 0 0 18px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
+    font-family: var(--font-head); font-size: 11px; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted);
+    margin: 0 0 16px; display: flex; align-items: center; gap: 10px;
+  }
+  .section-title::after { content:''; flex:1; height:1px; background: var(--border); }
+
+  /* Select boxes — oficina / servicio */
+  .select-grid {
+    display: grid; gap: 8px; max-height: 240px;
+    overflow-y: auto; margin-bottom: 4px;
+    scrollbar-width: thin; scrollbar-color: var(--accent) transparent;
+  }
+  .select-grid::-webkit-scrollbar { width: 4px; }
+  .select-grid::-webkit-scrollbar-track { background: transparent; }
+  .select-grid::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 4px; }
+
+  .sel-option { position: relative; }
+  .sel-option input[type=radio] { display: none; }
+  .sel-option label {
+    display: flex; align-items: center; gap: 10px;
+    padding: 11px 14px; border: 1.5px solid var(--border);
+    border-radius: var(--radius); cursor: pointer; transition: all 0.18s;
+    font-size: 13px; color: var(--muted); background: rgba(255,255,255,0.02);
+    font-weight: 400; letter-spacing: 0; text-transform: none; margin: 0;
+    line-height: 1.3;
+  }
+  .sel-option label:hover { border-color: rgba(91,127,255,0.35); color: var(--text); }
+  .sel-option input:checked + label {
+    border-color: var(--accent); background: rgba(91,127,255,0.1);
+    color: var(--text); font-weight: 500;
+  }
+  .sel-dot {
+    width: 14px; height: 14px; border: 2px solid currentColor;
+    border-radius: 50%; flex-shrink: 0; position: relative; transition: all 0.18s;
+  }
+  .sel-option input:checked + label .sel-dot::after {
+    content:''; position:absolute; inset:2px; background:var(--accent); border-radius:50%;
+  }
+  .sel-badge {
+    margin-left: auto; font-size: 10px; padding: 2px 7px;
+    background: rgba(91,127,255,0.15); color: var(--accent);
+    border-radius: 20px; letter-spacing: 0.05em; font-weight: 600; white-space: nowrap;
   }
 
-  .section-title::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: var(--border);
+  /* Search box for filtering */
+  .search-box {
+    width: 100%; background: rgba(255,255,255,0.04);
+    border: 1.5px solid var(--border); border-radius: var(--radius);
+    padding: 10px 14px; font-family: var(--font-body); font-size: 14px;
+    color: var(--text); outline: none; margin-bottom: 10px;
+    transition: border-color 0.2s, box-shadow 0.2s;
   }
+  .search-box:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(91,127,255,0.12); }
+  .search-box::placeholder { color: rgba(255,255,255,0.2); }
 
-  /* ── Grupos ── */
-  .form-group { margin-bottom: 20px; }
-  .form-row   { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+  /* Step panels */
+  .step-panel { display: none; }
+  .step-panel.active { display: block; }
 
-  @media (max-width: 440px) { .form-row { grid-template-columns: 1fr; } }
+  /* Btn next */
+  .btn-next {
+    width: 100%; margin-top: 20px; padding: 14px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border: none; border-radius: var(--radius);
+    font-family: var(--font-head); font-size: 14px; font-weight: 700;
+    letter-spacing: 0.03em; color: #fff; cursor: pointer;
+    transition: all 0.25s; opacity: 0.45; pointer-events: none;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+  }
+  .btn-next.enabled { opacity: 1; pointer-events: auto; }
+  .btn-next:hover.enabled { filter: brightness(1.1); }
 
-  /* ── Labels ── */
+  /* Form inputs */
+  .form-group { margin-bottom: 18px; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 18px; }
+  @media(max-width:440px){ .form-row { grid-template-columns:1fr; } }
+
   label {
-    display: block;
-    font-size: 12px;
-    font-weight: 500;
-    color: var(--label);
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    margin-bottom: 8px;
+    display: block; font-size: 12px; font-weight: 500; color: var(--label);
+    letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 7px;
   }
-
   label .req { color: var(--accent); margin-left: 2px; }
 
-  /* ── Inputs ── */
-  input[type=text],
-  input[type=email],
-  input[type=tel],
-  input[type=date] {
-    width: 100%;
-    background: rgba(255,255,255,0.04);
-    border: 1.5px solid var(--border);
-    border-radius: var(--radius);
-    padding: 13px 16px;
-    font-family: var(--font-body);
-    font-size: 15px;
-    color: var(--text);
-    transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
-    outline: none;
-    -webkit-appearance: none;
+  input[type=text], input[type=email], input[type=tel], input[type=date] {
+    width: 100%; background: rgba(255,255,255,0.04);
+    border: 1.5px solid var(--border); border-radius: var(--radius);
+    padding: 12px 15px; font-family: var(--font-body); font-size: 15px;
+    color: var(--text); transition: border-color 0.2s,background 0.2s,box-shadow 0.2s;
+    outline: none; -webkit-appearance: none;
   }
-
-  input:focus {
-    border-color: var(--accent);
-    background: rgba(91,127,255,0.06);
-    box-shadow: 0 0 0 3px rgba(91,127,255,0.12);
-  }
-
+  input:focus { border-color: var(--accent); background: rgba(91,127,255,0.06); box-shadow: 0 0 0 3px rgba(91,127,255,0.12); }
   input::placeholder { color: rgba(255,255,255,0.2); }
-
   input.error { border-color: var(--error); }
-  input.error:focus { box-shadow: 0 0 0 3px rgba(248,113,113,0.15); }
+  .error-msg { font-size: 12px; color: var(--error); margin-top: 5px; display: none; }
+  input.error + .error-msg, input.error ~ .error-msg { display: block; }
 
-  .error-msg {
-    font-size: 12px;
-    color: var(--error);
-    margin-top: 6px;
-    display: none;
-  }
-
-  input.error + .error-msg,
-  input.error ~ .error-msg { display: block; }
-
-  /* ── Radio tipo doc ── */
-  .radio-group {
-    display: flex;
-    gap: 10px;
-  }
-
-  .radio-option {
-    flex: 1;
-    position: relative;
-  }
-
+  /* Radio tipo doc */
+  .radio-group { display: flex; gap: 10px; }
+  .radio-option { flex: 1; position: relative; }
   .radio-option input { display: none; }
-
   .radio-option label {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    padding: 12px;
-    border: 1.5px solid var(--border);
-    border-radius: var(--radius);
-    cursor: pointer;
-    transition: all 0.2s;
-    text-transform: none;
-    font-size: 14px;
-    letter-spacing: 0;
-    color: var(--muted);
-    background: rgba(255,255,255,0.02);
-    font-weight: 400;
-    margin: 0;
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+    padding: 11px; border: 1.5px solid var(--border); border-radius: var(--radius);
+    cursor: pointer; transition: all 0.2s; text-transform: none; font-size: 13px;
+    letter-spacing: 0; color: var(--muted); background: rgba(255,255,255,0.02);
+    font-weight: 400; margin: 0;
   }
+  .radio-option input:checked + label { border-color: var(--accent); background: rgba(91,127,255,0.1); color: var(--text); }
+  .radio-dot { width:14px; height:14px; border:2px solid currentColor; border-radius:50%; flex-shrink:0; position:relative; transition:all 0.2s; }
+  .radio-option input:checked + label .radio-dot::after { content:''; position:absolute; inset:2px; background:var(--accent); border-radius:50%; }
 
-  .radio-option input:checked + label {
-    border-color: var(--accent);
-    background: rgba(91,127,255,0.1);
-    color: var(--text);
+  /* Summary selected */
+  .selected-summary {
+    background: rgba(91,127,255,0.07); border: 1px solid rgba(91,127,255,0.2);
+    border-radius: var(--radius); padding: 12px 15px; margin-bottom: 20px;
+    font-size: 13px; color: var(--label); line-height: 1.6;
   }
+  .selected-summary strong { color: var(--text); }
 
-  .radio-option label:hover {
-    border-color: rgba(91,127,255,0.4);
-    color: var(--text);
-  }
+  /* Date */
+  .date-group { position: relative; }
+  .date-group input { padding-right: 38px; cursor: pointer; }
+  .date-icon { position:absolute; right:13px; top:50%; transform:translateY(-50%); color:var(--muted); pointer-events:none; font-size:14px; }
+  input[type=date]::-webkit-calendar-picker-indicator { opacity:0; position:absolute; right:0; width:40px; height:100%; cursor:pointer; }
 
-  .radio-dot {
-    width: 14px; height: 14px;
-    border: 2px solid currentColor;
-    border-radius: 50%;
-    flex-shrink: 0;
-    transition: all 0.2s;
-    position: relative;
-  }
-
-  .radio-option input:checked + label .radio-dot::after {
-    content: '';
-    position: absolute;
-    inset: 2px;
-    background: var(--accent);
-    border-radius: 50%;
-  }
-
-  /* ── Date inputs container ── */
-  .date-group {
-    position: relative;
-  }
-
-  .date-group input { padding-right: 40px; cursor: pointer; }
-
-  .date-icon {
-    position: absolute;
-    right: 14px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: var(--muted);
-    pointer-events: none;
-    font-size: 15px;
-  }
-
-  /* ── Checkbox privacidad ── */
+  /* Privacy */
   .privacy-row {
-    display: flex;
-    gap: 12px;
-    align-items: flex-start;
-    margin-top: 24px;
-    padding: 16px;
-    background: rgba(255,255,255,0.02);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
+    display: flex; gap: 12px; align-items: flex-start; margin-top: 20px;
+    padding: 14px; background: rgba(255,255,255,0.02);
+    border: 1px solid var(--border); border-radius: var(--radius);
   }
-
   .privacy-check {
-    width: 20px; height: 20px;
-    border: 1.5px solid var(--border);
-    border-radius: 6px;
-    flex-shrink: 0;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s;
-    margin-top: 2px;
-    background: rgba(255,255,255,0.03);
+    width:20px; height:20px; border:1.5px solid var(--border); border-radius:6px;
+    flex-shrink:0; cursor:pointer; display:flex; align-items:center; justify-content:center;
+    transition:all 0.2s; margin-top:2px; background:rgba(255,255,255,0.03);
   }
+  .privacy-check.checked { background:var(--accent); border-color:var(--accent); }
+  .privacy-check svg { display:none; }
+  .privacy-check.checked svg { display:block; }
+  .privacy-text { font-size:13px; color:var(--muted); line-height:1.5; cursor:pointer; }
+  .privacy-text a { color:var(--accent); text-decoration:none; }
 
-  #privacy:checked ~ .privacy-check,
-  .privacy-check.checked {
-    background: var(--accent);
-    border-color: var(--accent);
-  }
-
-  .privacy-check svg { display: none; }
-  .privacy-check.checked svg { display: block; }
-
-  #privacy { display: none; }
-
-  .privacy-text { font-size: 13px; color: var(--muted); line-height: 1.5; cursor: pointer; }
-  .privacy-text a { color: var(--accent); text-decoration: none; }
-
-  /* ── Botón submit ── */
+  /* Submit */
   .btn-submit {
-    width: 100%;
-    margin-top: 28px;
-    padding: 16px;
+    width:100%; margin-top:24px; padding:15px;
     background: linear-gradient(135deg, var(--accent), var(--accent2));
-    border: none;
-    border-radius: var(--radius);
-    font-family: var(--font-head);
-    font-size: 15px;
-    font-weight: 700;
-    letter-spacing: 0.03em;
-    color: #fff;
-    cursor: pointer;
-    transition: all 0.25s;
-    position: relative;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
+    border:none; border-radius:var(--radius);
+    font-family:var(--font-head); font-size:15px; font-weight:700;
+    letter-spacing:0.03em; color:#fff; cursor:pointer; transition:all 0.25s;
+    position:relative; overflow:hidden; display:flex; align-items:center; justify-content:center; gap:10px;
   }
+  .btn-submit:disabled { opacity:.5; cursor:not-allowed; }
+  .btn-submit .spinner { width:18px; height:18px; border:2px solid rgba(255,255,255,.3); border-top-color:#fff; border-radius:50%; animation:spin .7s linear infinite; display:none; }
+  @keyframes spin { to { transform:rotate(360deg); } }
+  .btn-submit.loading .spinner { display:block; }
+  .btn-submit.loading .btn-text { display:none; }
 
-  .btn-submit::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: rgba(255,255,255,0);
-    transition: background 0.2s;
-  }
+  /* Success */
+  .success-screen { display:none; text-align:center; padding:36px 16px; }
+  .success-icon { width:76px; height:76px; background:rgba(52,211,153,.12); border:2px solid rgba(52,211,153,.3); border-radius:50%; margin:0 auto 20px; display:flex; align-items:center; justify-content:center; font-size:34px; animation:pop .4s cubic-bezier(.175,.885,.32,1.275); }
+  @keyframes pop { from{transform:scale(0);opacity:0} to{transform:scale(1);opacity:1} }
+  .success-screen h2 { font-family:var(--font-head); font-size:22px; font-weight:800; margin-bottom:8px; color:var(--success); }
+  .success-screen p { color:var(--muted); font-size:14px; max-width:300px; margin:0 auto 24px; }
+  .btn-tg { display:inline-flex; align-items:center; gap:10px; background:#229ED9; border:none; border-radius:var(--radius); padding:13px 26px; color:#fff; font-family:var(--font-head); font-size:14px; font-weight:700; cursor:pointer; text-decoration:none; transition:opacity .2s; }
+  .btn-tg:hover { opacity:.85; }
 
-  .btn-submit:hover::before { background: rgba(255,255,255,0.08); }
-  .btn-submit:active { transform: scale(0.99); }
-  .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+  /* Error banner */
+  .form-error-banner { background:rgba(248,113,113,.1); border:1px solid rgba(248,113,113,.25); border-radius:var(--radius); padding:12px 15px; font-size:13px; color:var(--error); margin-bottom:14px; display:none; align-items:center; gap:8px; }
 
-  .btn-submit .spinner {
-    width: 18px; height: 18px;
-    border: 2px solid rgba(255,255,255,0.3);
-    border-top-color: #fff;
-    border-radius: 50%;
-    animation: spin 0.7s linear infinite;
-    display: none;
-  }
-
-  @keyframes spin { to { transform: rotate(360deg); } }
-  .btn-submit.loading .spinner { display: block; }
-  .btn-submit.loading .btn-text { display: none; }
-
-  /* ── Success state ── */
-  .success-screen {
-    display: none;
-    text-align: center;
-    padding: 40px 20px;
-  }
-
-  .success-icon {
-    width: 80px; height: 80px;
-    background: rgba(52,211,153,0.12);
-    border: 2px solid rgba(52,211,153,0.3);
-    border-radius: 50%;
-    margin: 0 auto 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 36px;
-    animation: pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  }
-
-  @keyframes pop {
-    from { transform: scale(0); opacity: 0; }
-    to   { transform: scale(1); opacity: 1; }
-  }
-
-  .success-screen h2 {
-    font-family: var(--font-head);
-    font-size: 24px;
-    font-weight: 800;
-    margin-bottom: 10px;
-    color: var(--success);
-  }
-
-  .success-screen p {
-    color: var(--muted);
-    font-size: 14px;
-    max-width: 300px;
-    margin: 0 auto 28px;
-  }
-
-  .btn-tg {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    background: #229ED9;
-    border: none;
-    border-radius: var(--radius);
-    padding: 14px 28px;
-    color: #fff;
-    font-family: var(--font-head);
-    font-size: 14px;
-    font-weight: 700;
-    cursor: pointer;
-    text-decoration: none;
-    transition: opacity 0.2s;
-  }
-
-  .btn-tg:hover { opacity: 0.85; }
-
-  /* ── Error state ── */
-  .form-error-banner {
-    background: rgba(248,113,113,0.1);
-    border: 1px solid rgba(248,113,113,0.25);
-    border-radius: var(--radius);
-    padding: 12px 16px;
-    font-size: 13px;
-    color: var(--error);
-    margin-bottom: 16px;
-    display: none;
-    align-items: center;
-    gap: 10px;
-  }
-
-  /* ── Footer ── */
-  .footer {
-    text-align: center;
-    margin-top: 32px;
-    font-size: 12px;
-    color: var(--muted);
-  }
-
-  .footer a { color: var(--accent); text-decoration: none; opacity: 0.8; }
-
-  /* ── Reveal animation ── */
-  .card { animation: reveal 0.5s cubic-bezier(0.22, 1, 0.36, 1); }
-
-  @keyframes reveal {
-    from { opacity: 0; transform: translateY(24px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
-  input[type=date]::-webkit-calendar-picker-indicator {
-    opacity: 0; position: absolute; right: 0; width: 40px; height: 100%; cursor: pointer;
-  }
+  /* Footer */
+  .footer { text-align:center; margin-top:28px; font-size:12px; color:var(--muted); }
+  .footer a { color:var(--accent); text-decoration:none; opacity:.8; }
 </style>
 </head>
 <body>
-
 <div class="wrap">
 
   <!-- Header -->
   <div class="header">
     <div class="header-badge">Bot activo</div>
-    <h1>Registro de<br>Datos Personales</h1>
-    <p>Rellena el formulario y tu cita se buscará automáticamente</p>
+    <h1>Cita Previa<br>SIGE GVA</h1>
+    <p>Elige tu Registro Civil, el trámite y rellena tus datos</p>
   </div>
 
-  <!-- Info banner dinámica -->
-  <div class="info-banner">
-    <span class="icon">🤖</span>
-    <div class="info-banner-text">
-      <strong id="banner-tramite">Cargando...</strong><br>
-      <span id="banner-oficina">Verificando tu enlace...</span>
+  <!-- Steps -->
+  <div class="steps" id="stepsBar">
+    <div class="step active" id="stepInd1">
+      <div class="step-circle">1</div>
+      <div class="step-label">Centro</div>
+    </div>
+    <div class="step-line" id="line1"></div>
+    <div class="step" id="stepInd2">
+      <div class="step-circle">2</div>
+      <div class="step-label">Trámite</div>
+    </div>
+    <div class="step-line" id="line2"></div>
+    <div class="step" id="stepInd3">
+      <div class="step-circle">3</div>
+      <div class="step-label">Datos</div>
     </div>
   </div>
 
   <!-- Card -->
   <div class="card">
 
-    <!-- Success -->
-    <div class="success-screen" id="success">
-      <div class="success-icon">✅</div>
-      <h2>¡Datos enviados!</h2>
-      <p>Tus datos han llegado al bot. Vuelve al chat de Telegram para continuar.</p>
-      <a id="tg-link" href="https://t.me/" class="btn-tg">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
-          <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248l-1.97 9.282c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.939z"/>
-        </svg>
-        Volver a Telegram
-      </a>
+    <!-- ══ STEP 1: ELEGIR CENTRO ══ -->
+    <div class="step-panel active" id="panel1">
+      <div class="section-title">🏛 Registro Civil</div>
+      <input class="search-box" type="text" id="searchOffice" placeholder="🔍  Buscar centro..." oninput="filterOptions('officeGrid', this.value)">
+      <div class="select-grid" id="officeGrid">
+        <!-- Se genera por JS -->
+      </div>
+      <button class="btn-next" id="btnStep1" onclick="goStep(2)">
+        Continuar — Elegir trámite
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="white" stroke-width="2.5" stroke-linecap="round"/></svg>
+      </button>
     </div>
 
-    <!-- Form -->
-    <form id="regForm" novalidate>
-
-      <div class="form-error-banner" id="formError">
-        ⚠️ <span id="formErrorMsg">Por favor revisa los campos marcados.</span>
+    <!-- ══ STEP 2: ELEGIR SERVICIO ══ -->
+    <div class="step-panel" id="panel2">
+      <div class="selected-summary" id="summaryOffice"></div>
+      <div class="section-title">📋 Trámite</div>
+      <div class="select-grid" id="serviceGrid">
+        <!-- Se genera por JS -->
       </div>
-
-      <!-- Tipo doc -->
-      <div class="section-title">Identificación</div>
-
-      <div class="form-group">
-        <label>Tipo de documento <span class="req">*</span></label>
-        <div class="radio-group">
-          <div class="radio-option">
-            <input type="radio" id="docNIF" name="tipo_doc" value="NIF/NIE" checked>
-            <label for="docNIF">
-              <span class="radio-dot"></span>
-              NIF / NIE
-            </label>
-          </div>
-          <div class="radio-option">
-            <input type="radio" id="docPASS" name="tipo_doc" value="Pasaporte">
-            <label for="docPASS">
-              <span class="radio-dot"></span>
-              Pasaporte
-            </label>
-          </div>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label for="documento">Número de documento <span class="req">*</span></label>
-        <input type="text" id="documento" name="documento" placeholder="Ej: X1234567A" autocomplete="off" spellcheck="false">
-        <div class="error-msg">Introduce un documento válido (mínimo 8 caracteres)</div>
-      </div>
-
-      <!-- Datos personales -->
-      <div class="section-title" style="margin-top:28px">Datos personales</div>
-
-      <div class="form-group">
-        <label for="nombre">Nombre completo <span class="req">*</span></label>
-        <input type="text" id="nombre" name="nombre" placeholder="Nombre y apellidos" autocomplete="name">
-        <div class="error-msg">El nombre es obligatorio</div>
-      </div>
-
-      <div class="form-row">
-        <div class="form-group" style="margin:0">
-          <label for="telefono">Teléfono <span class="req">*</span></label>
-          <input type="tel" id="telefono" name="telefono" placeholder="6XX XXX XXX" maxlength="15" autocomplete="tel">
-          <div class="error-msg">Teléfono no válido</div>
-        </div>
-        <div class="form-group" style="margin:0">
-          <label for="correo">Email <span class="req">*</span></label>
-          <input type="email" id="correo" name="correo" placeholder="tu@email.com" autocomplete="email">
-          <div class="error-msg">Email no válido</div>
-        </div>
-      </div>
-
-      <!-- Fechas -->
-      <div class="section-title" style="margin-top:28px">Rango de fechas</div>
-
-      <div class="form-row">
-        <div class="form-group" style="margin:0">
-          <label for="fechaMin">Desde <span class="req">*</span></label>
-          <div class="date-group">
-            <input type="date" id="fechaMin" name="fechaMin">
-            <span class="date-icon">📅</span>
-          </div>
-        </div>
-        <div class="form-group" style="margin:0">
-          <label for="fechaMax">Hasta</label>
-          <div class="date-group">
-            <input type="date" id="fechaMax" name="fechaMax">
-            <span class="date-icon">📅</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Privacidad -->
-      <div class="privacy-row" id="privacyRow">
-        <div class="privacy-check" id="privacyCheck" onclick="togglePrivacy()">
-          <svg width="12" height="10" viewBox="0 0 12 10" fill="none">
-            <path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </div>
-        <div class="privacy-text" onclick="togglePrivacy()">
-          Acepto que mis datos se usen exclusivamente para gestionar la búsqueda y reserva de cita prevista.
-          <a href="#" onclick="return false">Ver política de privacidad</a>
-        </div>
-      </div>
-
-      <!-- Submit -->
-      <button type="submit" class="btn-submit" id="submitBtn">
-        <span class="spinner"></span>
-        <span class="btn-text">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="vertical-align:middle;margin-right:6px">
-            <path d="M22 2L11 13" stroke="white" stroke-width="2" stroke-linecap="round"/>
-            <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-          Enviar al bot
-        </span>
+      <button class="btn-next" id="btnStep2" onclick="goStep(3)">
+        Continuar — Mis datos
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="white" stroke-width="2.5" stroke-linecap="round"/></svg>
       </button>
+    </div>
 
-    </form>
-  </div>
+    <!-- ══ STEP 3: DATOS PERSONALES ══ -->
+    <div class="step-panel" id="panel3">
+
+      <!-- Success -->
+      <div class="success-screen" id="success">
+        <div class="success-icon">✅</div>
+        <h2>¡Datos enviados!</h2>
+        <p>El bot ha recibido tus datos y empezará la búsqueda automáticamente.</p>
+        <a id="tg-link" href="https://t.me/" class="btn-tg">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248l-1.97 9.282c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.939z"/></svg>
+          Volver a Telegram
+        </a>
+      </div>
+
+      <!-- Form -->
+      <form id="regForm" novalidate>
+
+        <div class="selected-summary" id="summaryFull"></div>
+
+        <div class="form-error-banner" id="formError">
+          ⚠️ <span id="formErrorMsg">Revisa los campos marcados.</span>
+        </div>
+
+        <!-- Identificación -->
+        <div class="section-title">Identificación</div>
+
+        <div class="form-group">
+          <label>Tipo de documento <span class="req">*</span></label>
+          <div class="radio-group">
+            <div class="radio-option">
+              <input type="radio" id="docNIF" name="tipo_doc" value="NIF/NIE" checked>
+              <label for="docNIF"><span class="radio-dot"></span>NIF / NIE</label>
+            </div>
+            <div class="radio-option">
+              <input type="radio" id="docPASS" name="tipo_doc" value="Pasaporte">
+              <label for="docPASS"><span class="radio-dot"></span>Pasaporte</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="documento">Número de documento <span class="req">*</span></label>
+          <input type="text" id="documento" name="documento" placeholder="Ej: X1234567A" autocomplete="off" spellcheck="false">
+          <div class="error-msg">Introduce un documento válido (mínimo 8 caracteres)</div>
+        </div>
+
+        <!-- Datos personales -->
+        <div class="section-title" style="margin-top:24px">Datos personales</div>
+
+        <div class="form-group">
+          <label for="nombre">Nombre completo <span class="req">*</span></label>
+          <input type="text" id="nombre" name="nombre" placeholder="Nombre y apellidos" autocomplete="name">
+          <div class="error-msg">El nombre es obligatorio</div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group" style="margin:0">
+            <label for="telefono">Teléfono <span class="req">*</span></label>
+            <input type="tel" id="telefono" name="telefono" placeholder="6XX XXX XXX" maxlength="15" autocomplete="tel">
+            <div class="error-msg">Teléfono no válido</div>
+          </div>
+          <div class="form-group" style="margin:0">
+            <label for="correo">Email <span class="req">*</span></label>
+            <input type="email" id="correo" name="correo" placeholder="tu@email.com" autocomplete="email">
+            <div class="error-msg">Email no válido</div>
+          </div>
+        </div>
+
+        <!-- Privacidad -->
+        <div class="privacy-row" id="privacyRow">
+          <div class="privacy-check" id="privacyCheck" onclick="togglePrivacy()">
+            <svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="privacy-text" onclick="togglePrivacy()">
+            Acepto que mis datos se usen exclusivamente para gestionar la búsqueda y reserva de cita previa.
+            <a href="#" onclick="return false">Ver política de privacidad</a>
+          </div>
+        </div>
+
+        <!-- Submit -->
+        <button type="submit" class="btn-submit" id="submitBtn">
+          <span class="spinner"></span>
+          <span class="btn-text">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" style="vertical-align:middle;margin-right:5px"><path d="M22 2L11 13" stroke="white" stroke-width="2" stroke-linecap="round"/><path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Enviar al bot
+          </span>
+        </button>
+
+      </form>
+    </div><!-- /panel3 -->
+
+  </div><!-- /card -->
 
   <div class="footer">
     <p>🔒 Tus datos son seguros y se usan solo para tu cita.</p>
   </div>
 
-</div>
+</div><!-- /wrap -->
 
 <script>
 // ══════════════════════════════════════════════════════
-//  CONFIGURACIÓN — El bot genera la URL con estos params
-//  Ejemplo: formulario.html?chat_id=123456&token=BOT_TOKEN&tramite=...
+//  DATOS — CENTROS Y SERVICIOS SIGE GVA
 // ══════════════════════════════════════════════════════
 
+const OFFICES = [
+  { name: "OFICINA GENERAL DEL REGISTRO CIVIL DE BENIDORM", city: "Benidorm",     addr: "Av Comunidad Europea" },
+  { name: "REGISTRO CIVIL ALCOY",                            city: "Alcoy",        addr: "Pl Mare De Deu 2" },
+  { name: "REGISTRO CIVIL ALZIRA",                           city: "Alzira",       addr: "Ronda Algemesi 13" },
+  { name: "REGISTRO CIVIL CARLET",                           city: "Carlet",       addr: "Pl Joan Fuster 1" },
+  { name: "REGISTRO CIVIL CASTELLON",                        city: "Castellón",    addr: "Bulevar Blasco Ibañez 10" },
+  { name: "REGISTRO CIVIL CATARROJA",                        city: "Catarroja",    addr: "Pl Corts Valencianes" },
+  { name: "REGISTRO CIVIL DENIA",                            city: "Dénia",        addr: "Pl Jaume I 23" },
+  { name: "REGISTRO CIVIL ELDA",                             city: "Elda",         addr: "San Francisco 3" },
+  { name: "REGISTRO CIVIL ELX",                              city: "Elche",        addr: "Advocats DAtocha" },
+  { name: "REGISTRO CIVIL EXCLUSIVO ALICANTE",               city: "Alicante",     addr: "Els Dos Cents 3" },
+  { name: "REGISTRO CIVIL EXCLUSIVO VALENCIA N1 Y N2",       city: "Valencia",     addr: "Av Prof. López Piñero 14" },
+  { name: "REGISTRO CIVIL EXCLUSIVO VALENCIA N3",            city: "Valencia",     addr: "Av Prof. López Piñero 14" },
+  { name: "REGISTRO CIVIL GANDIA",                           city: "Gandia",       addr: "C/ Monduver 62" },
+  { name: "REGISTRO CIVIL LLIRIA",                           city: "Llíria",       addr: "Metge José Pérez Martínez S/N" },
+  { name: "REGISTRO CIVIL MASAMAGRELL",                      city: "Masamagrell",  addr: "Pl Dels Jutjats" },
+  { name: "REGISTRO CIVIL MISLATA",                          city: "Mislata",      addr: "Pl Espanya 2" },
+  { name: "REGISTRO CIVIL MONCADA",                          city: "Moncada",      addr: "Lepanto 78" },
+  { name: "REGISTRO CIVIL NOVELDA",                          city: "Novelda",      addr: "Av De La Constitucion 84" },
+  { name: "REGISTRO CIVIL NULES",                            city: "Nules",        addr: "Av Francisco Santacruz" },
+  { name: "REGISTRO CIVIL ORIHUELA",                         city: "Orihuela",     addr: "Pl Santa Lucia" },
+  { name: "REGISTRO CIVIL PATERNA",                          city: "Paterna",      addr: "Av Vicent Mortes Alfonso 114" },
+  { name: "REGISTRO CIVIL QUART DE POBLET",                  city: "Quart de Poblet", addr: "Av Villalba De Lugo 15" },
+  { name: "REGISTRO CIVIL REQUENA",                          city: "Requena",      addr: "Honrubia" },
+  { name: "REGISTRO CIVIL SAGUNTO",                          city: "Sagunto",      addr: "Av Dr Pals 24" },
+  { name: "REGISTRO CIVIL SEGORBE",                          city: "Segorbe",      addr: "Fray Bonifacio Ferrer 1" },
+  { name: "REGISTRO CIVIL SUECA",                            city: "Sueca",        addr: "Pl Del Convent" },
+  { name: "REGISTRO CIVIL TORRENT",                          city: "Torrent",      addr: "Plaza de la Libertad 3" },
+  { name: "REGISTRO CIVIL TORREVIEJA",                       city: "Torrevieja",   addr: "Patricio Zammit 50" },
+  { name: "REGISTRO CIVIL VILA-REAL",                        city: "Vila-real",    addr: "Matilde Salvador 6" },
+  { name: "REGISTRO CIVIL VILLAJOYOSA",                      city: "Villajoyosa",  addr: "Juan Tonda Aragones N2" },
+  { name: "REGISTRO CIVIL VILLENA",                          city: "Villena",      addr: "Sancho Medina 13" },
+  { name: "REGISTRO CIVIL VINAROS",                          city: "Vinaròs",      addr: "Av De La Libertat" },
+];
+
+// Servicios por oficina (los mismos en todas; ajustar si alguna difiere)
+const SERVICES_DEFAULT = [
+  "CP TRAMITES CAMBIO DE NOMBRE Y SEXO",
+  "CP TRAMITES GENERALES",
+  "CP INSCRIPCION NACIMIENTO",
+  "CP EXPEDIENTE MATRIMONIO",
+  "CP EXPEDIENTE DEFUNCION",
+  "CP CERTIFICADOS",
+  "CP FE DE VIDA Y ESTADO",
+];
+
+// Servicios específicos para ciertas oficinas
+const SERVICES_MAP = {
+  "REGISTRO CIVIL EXCLUSIVO VALENCIA N1 Y N2": [
+    "CP TRAMITES CAMBIO DE NOMBRE Y SEXO",
+    "CP TRAMITES GENERALES",
+    "CP INSCRIPCION NACIMIENTO",
+    "CP EXPEDIENTE MATRIMONIO",
+    "CP EXPEDIENTE DEFUNCION",
+    "CP CERTIFICADOS",
+    "CP FE DE VIDA Y ESTADO",
+  ],
+  "REGISTRO CIVIL EXCLUSIVO ALICANTE": [
+    "CP TRAMITES CAMBIO DE NOMBRE Y SEXO",
+    "CP TRAMITES GENERALES",
+    "CP INSCRIPCION NACIMIENTO",
+    "CP EXPEDIENTE MATRIMONIO",
+    "CP EXPEDIENTE DEFUNCION",
+    "CP CERTIFICADOS",
+  ],
+};
+
+// ══════════════════════════════════════════════════════
+//  URL PARAMS
+// ══════════════════════════════════════════════════════
 const params    = new URLSearchParams(window.location.search);
 const CHAT_ID   = params.get('chat_id')   || '';
 const BOT_TOKEN = params.get('token')     || '';
-const TRAMITE   = params.get('tramite')   || 'Cita Previa';
-const OFICINA   = params.get('oficina')   || '';
-const TG_USER   = params.get('tg_user')   || '';  // username del bot
+const TG_USER   = params.get('tg_user')   || '';
 const TG_API    = `https://api.telegram.org/bot${BOT_TOKEN}`;
 
-// ── Rellenar info banner ──────────────────────────────
-document.getElementById('banner-tramite').textContent = TRAMITE;
-document.getElementById('banner-oficina').textContent = OFICINA || 'Rellena tus datos para continuar';
+// Pre-selected from bot (if user came from office+service buttons)
+let selectedOffice  = params.get('oficina') || '';
+let selectedService = params.get('tramite') || '';
 
-// ── Link de vuelta a Telegram ─────────────────────────
-if (TG_USER) {
-  document.getElementById('tg-link').href = `https://t.me/${TG_USER}`;
+// If bot sent office+service, skip to step 3
+let currentStep = 1;
+
+if (TG_USER) document.getElementById('tg-link').href = `https://t.me/${TG_USER}`;
+
+// ══════════════════════════════════════════════════════
+//  RENDER OPTIONS
+// ══════════════════════════════════════════════════════
+
+function renderOffices() {
+  const grid = document.getElementById('officeGrid');
+  grid.innerHTML = '';
+  OFFICES.forEach((o, i) => {
+    const div = document.createElement('div');
+    div.className = 'sel-option';
+    div.dataset.text = o.name.toLowerCase() + ' ' + o.city.toLowerCase();
+    div.innerHTML = `
+      <input type="radio" name="office" id="off${i}" value="${o.name}">
+      <label for="off${i}">
+        <span class="sel-dot"></span>
+        <span style="flex:1">
+          <span style="display:block;color:var(--text);font-weight:500">${o.city}</span>
+          <span style="display:block;font-size:11px;color:var(--muted);margin-top:1px">${o.name}</span>
+          <span style="display:block;font-size:10px;color:var(--muted);opacity:.6;margin-top:1px">📍 ${o.addr}</span>
+        </span>
+      </label>`;
+    div.querySelector('input').addEventListener('change', () => {
+      selectedOffice = o.name;
+      document.getElementById('btnStep1').classList.add('enabled');
+    });
+    grid.appendChild(div);
+  });
 }
 
-// ── Fechas por defecto ────────────────────────────────
-(function setDefaultDates() {
-  const today = new Date();
-  const fmt   = d => d.toISOString().split('T')[0];
-  const max   = new Date(today); max.setFullYear(max.getFullYear() + 1);
-  document.getElementById('fechaMin').value = fmt(today);
-  document.getElementById('fechaMax').value = fmt(max);
-  document.getElementById('fechaMin').min   = fmt(today);
-})();
+function renderServices(officeName) {
+  const svcs = SERVICES_MAP[officeName] || SERVICES_DEFAULT;
+  const grid = document.getElementById('serviceGrid');
+  grid.innerHTML = '';
+  svcs.forEach((s, i) => {
+    const div = document.createElement('div');
+    div.className = 'sel-option';
+    div.innerHTML = `
+      <input type="radio" name="service" id="svc${i}" value="${s}">
+      <label for="svc${i}">
+        <span class="sel-dot"></span>
+        <span style="flex:1">${s}</span>
+      </label>`;
+    div.querySelector('input').addEventListener('change', () => {
+      selectedService = s;
+      document.getElementById('btnStep2').classList.add('enabled');
+    });
+    grid.appendChild(div);
+  });
+}
 
-// ── Checkbox privacidad ───────────────────────────────
+function filterOptions(gridId, query) {
+  const q = query.toLowerCase().trim();
+  document.querySelectorAll(`#${gridId} .sel-option`).forEach(el => {
+    const txt = el.dataset.text || el.textContent.toLowerCase();
+    el.style.display = (!q || txt.includes(q)) ? '' : 'none';
+  });
+}
+
+// ══════════════════════════════════════════════════════
+//  STEP NAVIGATION
+// ══════════════════════════════════════════════════════
+
+function goStep(n) {
+  // Hide all panels & deactivate steps
+  document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+
+  // Mark previous steps as done
+  for (let i = 1; i < n; i++) {
+    const ind = document.getElementById(`stepInd${i}`);
+    if (ind) { ind.classList.remove('active'); ind.classList.add('done'); }
+    const line = document.getElementById(`line${i}`);
+    if (line) line.classList.add('done');
+  }
+
+  // Activate current step
+  const panel = document.getElementById(`panel${n}`);
+  const stepInd = document.getElementById(`stepInd${n}`);
+  if (panel) panel.classList.add('active');
+  if (stepInd) stepInd.classList.add('active');
+  currentStep = n;
+
+  if (n === 2) {
+    // Load services for selected office
+    renderServices(selectedOffice);
+    document.getElementById('summaryOffice').innerHTML =
+      `🏛️ <strong>${selectedOffice}</strong>`;
+  }
+
+  if (n === 3) {
+    document.getElementById('summaryFull').innerHTML =
+      `🏛️ <strong>${selectedOffice}</strong><br>📋 <strong>${selectedService}</strong>`;
+    // Default dates
+    const today = new Date();
+    const fmt = d => d.toISOString().split('T')[0];
+    const max = new Date(today); max.setFullYear(max.getFullYear() + 1);
+    if (document.getElementById('fechaMin')) {
+      document.getElementById('fechaMin').value = fmt(today);
+      document.getElementById('fechaMin').min   = fmt(today);
+    }
+    if (document.getElementById('fechaMax')) {
+      document.getElementById('fechaMax').value = fmt(max);
+    }
+  }
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ══════════════════════════════════════════════════════
+//  PRIVACY TOGGLE
+// ══════════════════════════════════════════════════════
 let privacyChecked = false;
-
 function togglePrivacy() {
   privacyChecked = !privacyChecked;
-  const el = document.getElementById('privacyCheck');
-  el.classList.toggle('checked', privacyChecked);
+  document.getElementById('privacyCheck').classList.toggle('checked', privacyChecked);
   document.getElementById('privacyRow').style.borderColor =
     privacyChecked ? 'rgba(91,127,255,0.3)' : '';
 }
 
-// ── Validación ────────────────────────────────────────
+// ══════════════════════════════════════════════════════
+//  VALIDATION
+// ══════════════════════════════════════════════════════
 function validateField(el) {
-  const name = el.name;
-  let ok = true;
   const val = el.value.trim();
-
-  if (name === 'documento') ok = val.length >= 8;
-  if (name === 'nombre')    ok = val.length >= 2;
-  if (name === 'telefono')  ok = /^\+?[\d\s\-]{6,15}$/.test(val);
-  if (name === 'correo')    ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
-
+  let ok = true;
+  if (el.name === 'documento') ok = val.length >= 8;
+  if (el.name === 'nombre')    ok = val.length >= 2;
+  if (el.name === 'telefono')  ok = /^\+?[\d\s\-]{6,15}$/.test(val);
+  if (el.name === 'correo')    ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
   el.classList.toggle('error', !ok);
   return ok;
 }
 
-// Live validation
-['documento','nombre','telefono','correo'].forEach(name => {
-  const el = document.getElementById(name === 'correo' ? 'correo' : name);
-  if (el) {
-    el.addEventListener('blur',  () => validateField(el));
-    el.addEventListener('input', () => { if (el.classList.contains('error')) validateField(el); });
-  }
+['documento','nombre','telefono','correo'].forEach(id => {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.addEventListener('blur',  () => validateField(el));
+  el.addEventListener('input', () => { if (el.classList.contains('error')) validateField(el); });
 });
 
-document.getElementById('correo').addEventListener('blur',  () => validateField(document.getElementById('correo')));
-document.getElementById('correo').addEventListener('input', () => {
-  const el = document.getElementById('correo');
-  if (el.classList.contains('error')) validateField(el);
-});
-
-// ── Enviar al bot ─────────────────────────────────────
+// ══════════════════════════════════════════════════════
+//  SEND TO BOT
+// ══════════════════════════════════════════════════════
 async function sendToBot(data) {
-  if (!BOT_TOKEN || !CHAT_ID) {
-    console.warn('Sin BOT_TOKEN o CHAT_ID — modo demo');
-    return { ok: true };
-  }
+  if (!BOT_TOKEN || !CHAT_ID) { console.warn('Demo mode'); return { ok: true }; }
 
-  // Mensaje estructurado que el bot procesa
   const lines = [
-    `📋REGISTRO`,
+    '📋REGISTRO',
     `nombre=${data.nombre}`,
     `apellido=`,
     `tipo_doc=${data.tipo_doc}`,
     `documento=${data.documento}`,
     `telefono=${data.telefono}`,
     `email=${data.correo}`,
-    `fechaMin=${data.fechaMin}`,
-    `fechaMax=${data.fechaMax}`,
+    `oficina=${data.oficina}`,
+    `tramite=${data.tramite}`,
+    `fechaMin=${data.fechaMin || ''}`,
+    `fechaMax=${data.fechaMax || ''}`,
   ];
-
-  const text = lines.join('\n');
 
   const res = await fetch(`${TG_API}/sendMessage`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      chat_id:    CHAT_ID,
-      text:       text,
-      parse_mode: 'HTML',
-    }),
+    body: JSON.stringify({ chat_id: CHAT_ID, text: lines.join('\n'), parse_mode: 'HTML' }),
   });
   return res.json();
 }
 
-// ── Submit ────────────────────────────────────────────
+// ══════════════════════════════════════════════════════
+//  SUBMIT
+// ══════════════════════════════════════════════════════
 document.getElementById('regForm').addEventListener('submit', async function(e) {
   e.preventDefault();
 
-  // Validar campos obligatorios
   const fields = ['documento','nombre','telefono','correo'].map(id => document.getElementById(id));
   const allOk  = fields.map(f => validateField(f)).every(Boolean);
 
@@ -753,7 +716,6 @@ document.getElementById('regForm').addEventListener('submit', async function(e) 
     document.getElementById('formErrorMsg').textContent = 'Debes aceptar la política de privacidad.';
     return;
   }
-
   if (!allOk) {
     document.getElementById('formError').style.display = 'flex';
     document.getElementById('formErrorMsg').textContent = 'Por favor revisa los campos marcados.';
@@ -762,40 +724,47 @@ document.getElementById('regForm').addEventListener('submit', async function(e) 
 
   document.getElementById('formError').style.display = 'none';
 
-  // Recoger datos
   const data = {
-    tipo_doc: document.querySelector('input[name="tipo_doc"]:checked').value,
+    tipo_doc:  document.querySelector('input[name="tipo_doc"]:checked').value,
     documento: document.getElementById('documento').value.trim().toUpperCase(),
     nombre:    document.getElementById('nombre').value.trim(),
     telefono:  document.getElementById('telefono').value.trim(),
     correo:    document.getElementById('correo').value.trim().toLowerCase(),
-    fechaMin:  document.getElementById('fechaMin').value,
-    fechaMax:  document.getElementById('fechaMax').value,
+    oficina:   selectedOffice,
+    tramite:   selectedService,
+    fechaMin:  document.getElementById('fechaMin') ? document.getElementById('fechaMin').value : '',
+    fechaMax:  document.getElementById('fechaMax') ? document.getElementById('fechaMax').value : '',
   };
 
-  // Loading
   const btn = document.getElementById('submitBtn');
-  btn.classList.add('loading');
-  btn.disabled = true;
+  btn.classList.add('loading'); btn.disabled = true;
 
   try {
     const result = await sendToBot(data);
-
     if (result.ok) {
-      // Éxito
-      document.getElementById('regForm').style.display   = 'none';
-      document.getElementById('success').style.display   = 'block';
+      document.getElementById('regForm').style.display = 'none';
+      document.getElementById('success').style.display = 'block';
     } else {
       throw new Error(result.description || 'Error desconocido');
     }
   } catch (err) {
     document.getElementById('formError').style.display = 'flex';
-    document.getElementById('formErrorMsg').textContent =
-      'Error al enviar. Comprueba tu conexión e intenta de nuevo.';
-    btn.classList.remove('loading');
-    btn.disabled = false;
+    document.getElementById('formErrorMsg').textContent = 'Error al enviar. Comprueba tu conexión e intenta de nuevo.';
+    btn.classList.remove('loading'); btn.disabled = false;
   }
 });
+
+// ══════════════════════════════════════════════════════
+//  INIT
+// ══════════════════════════════════════════════════════
+renderOffices();
+
+// If bot pre-filled office+service (came from inline buttons), jump to step 3
+if (selectedOffice && selectedService) {
+  goStep(3);
+} else if (selectedOffice) {
+  goStep(2);
+}
 </script>
 </body>
 </html>
